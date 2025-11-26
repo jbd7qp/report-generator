@@ -53,7 +53,7 @@ curl http://localhost:8080/
 # generate report
 curl -O -J "http://localhost:8080/generate?file=assets/sample.csv"
 
-'''
+```
 
 A PDF will be created in the local reports/ directory with a timestamped filename such as:
 report_20251126_192225.pdf
