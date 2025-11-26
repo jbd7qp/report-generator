@@ -56,7 +56,9 @@ curl -O -J "http://localhost:8080/generate?file=assets/sample.csv"
 A PDF will be created in the local reports/ directory with a timestamped filename such as:
 report_20251126_192225.pdf
 
-4) Design Decisions
+---
+
+## 4) Design Decisions
 
 Why this concept?
 Docker was chosen to ensure reproducibility and eliminate environment setup issues. Flask provides a minimal, fast API layer for CSV input and PDF output. ReportLab allows deterministic, low-dependency PDF generation.
@@ -85,7 +87,9 @@ No CSV upload—file must exist on server
 No large dataset optimizations
 Cloud deployment does not allow file uploads (GET-based demo only)
 
-5) Results & Evaluation
+---
+
+## 5) Results & Evaluation
 
 Screenshots and Outputs (stored in /assets)
 assets/report_screenshot.png – Screenshot of generated PDF download
@@ -109,15 +113,19 @@ Complexity is O(n) for CSV scan
 PDF generation < 0.01s for small datasets
 Container size stays minimal due to few dependencies
 
-6) What’s Next
+---
 
-Add CSV upload via POST
-Expand PDF layout (tables, charts, branding)
-Add unit tests for summary logic
-Add FastAPI version for better docs and validation
-Add authentication or API keys for multi-user deployments
+## 6) What’s Next
 
-7) Links
+- Add CSV upload via POST
+- Expand PDF layout (tables, charts, branding)
+- Add unit tests for summary logic
+- Add FastAPI version for better docs and validation
+- Add authentication or API keys for multi-user deployments
+
+---
+
+## 7) Links
 
 GitHub Repo:
 https://github.com/jbd7qp/report-generator
