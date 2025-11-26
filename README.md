@@ -1,22 +1,23 @@
-Report Generator API
+# Report Generator API
 
-This project provides a containerized Flask API that reads a CSV file, generates summary statistics, and produces a PDF report. It supports local execution using Docker and includes a deployed cloud version on Azure App Service.
+This project provides a containerized Flask API that reads a CSV file, computes summary statistics, and produces a PDF report. It supports both local execution using Docker and an optional cloud deployment on Azure App Service.
 
-Features
+---
 
-Reads CSV files and computes mean, median, and count for numeric columns
+## Features
 
-Generates a PDF report using ReportLab
+- Reads CSV files and computes mean, median, and count for numeric columns  
+- Generates a PDF report using ReportLab  
+- Exposes a REST API endpoint for generating reports  
+- Containerized using Docker  
+- Automatically saves generated PDFs into a local `reports/` directory  
+- Optional cloud deployment using Azure App Service  
 
-Exposes a REST API endpoint for generating reports
+---
 
-Containerized using Docker
+## Repository Structure
 
-Automatically saves generated PDFs into a reports directory
-
-Optional cloud deployment using Azure App Service
-
-Repository Structure
+```
 report-generator/
 │
 ├── assets/
@@ -24,7 +25,7 @@ report-generator/
 │   ├── architecture.png
 │   └── report_screenshot.png
 │
-├── reports/                (created at runtime, stores generated PDFs)
+├── reports/               # Created at runtime, stores generated PDFs
 │
 ├── src/
 │   ├── __init__.py
@@ -37,99 +38,115 @@ report-generator/
 ├── requirements.txt
 ├── README.md
 └── run.sh
+```
 
-Architecture Diagram
+---
 
-The system architecture is shown in the image below:
+## Architecture Diagram
 
-assets/architecture.png
+The system architecture is shown below:
 
-How to Run Locally
-1. Build the Docker image
+![Architecture](assets/architecture.png)
+
+---
+
+## How to Run Locally
+
+### 1. Build the Docker image
+```bash
 docker build -t report-api .
+```
 
-2. Run the container
+### 2. Run the container
+```bash
 docker run -p 8080:8080 -v $(pwd)/reports:/app/reports report-api
+```
 
+This mounts the local `reports/` directory so generated PDFs are saved to your machine.
 
-This mounts the local reports directory so you can access generated PDFs on your machine.
+---
 
-3. Generate a report
+## Generating a Report
 
-In a separate terminal run:
+In a separate terminal:
 
+```bash
 curl -O -J "http://localhost:8080/generate?file=assets/sample.csv"
+```
 
+A PDF will appear in the `reports/` folder with a name like:
 
-A new PDF file will be created inside the reports folder with a name like:
-
+```
 report_20251126_192225.pdf
+```
 
-Cloud Deployment
+---
 
-This application is deployed on Azure App Service at the following URL:
+## Cloud Deployment
 
+This application is deployed on Azure App Service:
+
+**Base URL:**  
 https://reportgen-app-d9c781.azurewebsites.net/
 
-
-Home endpoint:
-
-https://reportgen-app-d9c781.azurewebsites.net/
-
-
-Generate PDF report (uses the embedded sample CSV):
-
+**Generate PDF report:**  
 https://reportgen-app-d9c781.azurewebsites.net/generate
 
-Results and Evaluation
-Example Generated Report
+The cloud deployment uses the embedded sample CSV.
 
-A sample generated PDF is included in the repository:
+---
 
+## Results and Evaluation
+
+### Example Generated Report  
+The sample PDF is located here:
+
+```
 assets/report_20251126_192225.pdf
+```
 
-Screenshot of the Output
+### Screenshot of Output  
+Included here:
 
-A screenshot of the downloaded PDF from the browser is included:
-
+```
 assets/report_screenshot.png
+```
 
-Sample Output Preview
+---
 
-The PDF summarizes each numeric column in the CSV:
+## Sample Output Preview
 
-Mean
+The generated PDF summarizes each numeric column in the CSV:
 
-Median
+- Mean  
+- Median  
+- Count  
 
-Count
+`sample.csv` includes columns such as:
 
-Example rows from sample.csv include:
+- id  
+- value_a  
+- value_b  
+- category (ignored as non-numeric)
 
-id
+---
 
-value_a
+## Environment Variables
 
-value_b
+This project **does not use a `.env` file**.  
+No secrets or environment variables are required for local or cloud execution.
 
-category
+---
 
-The API correctly excludes non-numeric columns such as category.
+## Requirements
 
-Environment Variables
+Python dependencies (listed in `requirements.txt`):
 
-This project does not use a .env file. No secrets or environment variables are required for local or cloud execution.
+- Flask  
+- ReportLab  
 
-Requirements
+---
 
-Python libraries used:
+## Contact
 
-Flask
-
-ReportLab
-
-All dependencies are listed in requirements.txt.
-
-Contact
-
-For any questions or issues, contact the developer.
+For questions or issues, contact the developer.
