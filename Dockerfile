@@ -1,8 +1,6 @@
 FROM python:3.11-slim
 
-# Install dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
+RUN apt-get update && apt-get install -y --no-install-recommends gcc \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -12,11 +10,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ src/
 COPY assets/ assets/
-COPY run.sh .
 
-# Add src to Python path so imports work
-ENV PYTHONPATH=/app/src
+ENV PYTHONPATH=/app
 
-# Default command
-CMD ["python", "src/main.py", "assets/sample.csv"]
+EXPOSE 8080
 
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "src.app:app", "--workers", "1"]

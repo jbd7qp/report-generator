@@ -1,8 +1,9 @@
+# src/main.py
 import sys
 import logging
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-from utils import read_csv, summarize_data
+from src.utils import read_csv, summarize_data  # <-- updated import
 
 # Configure logging
 logging.basicConfig(
