@@ -15,7 +15,7 @@ This project provides a Flask-based API that accepts a CSV file, computes summar
 ## 2) System Overview
 
 ### Course Concept(s)  
-Containerization (Docker), REST APIs, Microservice Patterns, Data Processing Pipelines, Report Generation, Cloud Deployment (optional).
+Containerization (Docker), REST APIs, Microservice Patterns, Data Processing Pipelines, Report Generation, Cloud Deployment.
 
 ### Architecture Diagram  
 See `/assets/architecture.png` (embedded below):
@@ -32,7 +32,7 @@ See `/assets/architecture.png` (embedded below):
 - Flask web service  
 - ReportLab PDF generator  
 - Docker container runtime  
-- Optional Azure App Service deployment  
+- Azure App Service deployment  
 
 ---
 
@@ -62,58 +62,62 @@ report_20251126_192225.pdf
 
 ## 4) Design Decisions
 
-Why this concept?
-Docker was chosen to ensure reproducibility and eliminate environment setup issues. Flask provides a minimal, fast API layer for CSV input and PDF output. ReportLab allows deterministic, low-dependency PDF generation.
+### Why this concept?
+Docker was chosen to ensure reproducibility and eliminate environment setup issues.  
+Flask provides a minimal, fast API layer for CSV input and PDF output.  
+ReportLab allows deterministic, low-dependency PDF generation.
 
-Alternatives Considered
-FastAPI (more features but unnecessary for a single endpoint)
-Pandas (heavier dependency; custom code was enough for summary stats)
-Cloud storage for reports (not required for this assignment)
+### Alternatives Considered
+- **FastAPI** – more features but unnecessary for a single endpoint  
+- **Pandas** – heavier dependency; custom code was enough for summary stats  
+- **Cloud storage for reports** – not required for this assignment
 
-Tradeoffs
-Simplicity vs. flexibility: Hard-coded PDF layout for reliability
-Lightweight implementation but not intended for large datasets
-Minimal API (single-purpose microservice)
+### Tradeoffs
+- Simplicity vs. flexibility: Hard-coded PDF layout for reliability  
+- Lightweight implementation but not intended for large datasets  
+- Minimal API (single-purpose microservice)
 
-Security / Privacy
-No PII data processed
-No secrets required
-Input CSV validated by checking file existence
-No environment variables needed for local or cloud execution
+### Security / Privacy
+- No PII data processed  
+- No secrets required  
+- Input CSV validated by checking file existence  
+- No environment variables needed for local or cloud execution
 
-Ops
-Logging to stdout (compatible with Azure App Service)
-Scaling: Stateless container; replicas could run independently
-Known Limitations:
-No CSV upload—file must exist on server
-No large dataset optimizations
-Cloud deployment does not allow file uploads (GET-based demo only)
+### Ops
+- Logging to stdout (compatible with Azure App Service)  
+- Scaling: Stateless container; replicas could run independently  
+
+**Known Limitations:**
+- No CSV upload—file must exist on server  
+- No large dataset optimizations  
+- Cloud deployment does not allow file uploads (GET-based demo only)
 
 ---
 
 ## 5) Results & Evaluation
 
-Screenshots and Outputs (stored in /assets)
-assets/report_screenshot.png – Screenshot of generated PDF download
-assets/architecture.png – Architecture diagram
+### Screenshots and Outputs
+Stored in `/assets`:  
+- `assets/report_screenshot.png` – Screenshot of generated PDF download  
+- `assets/architecture.png` – Architecture diagram  
 
-Sample generated PDF included:
-reports/report_20251126_192225.pdf
+Sample generated PDF included:  
+- `reports/report_20251126_192225.pdf`
 
-Behavior
-Summarizes numeric columns (id, value_a, value_b)
-Skips non-numeric columns such as category
-Generates a clean PDF formatted with ReportLab
+### Behavior
+- Summarizes numeric columns (`id`, `value_a`, `value_b`)  
+- Skips non-numeric columns such as `category`  
+- Generates a clean PDF formatted with ReportLab
 
-Validation / Tests
-Local test of /generate endpoint using sample CSV
-Verified PDF output stored into mounted reports directory
-Confirmed container runs consistently through multiple rebuilds
+### Validation / Tests
+- Local test of `/generate` endpoint using sample CSV  
+- Verified PDF output stored into mounted `reports/` directory  
+- Confirmed container runs consistently through multiple rebuilds
 
-Performance Notes
-Complexity is O(n) for CSV scan
-PDF generation < 0.01s for small datasets
-Container size stays minimal due to few dependencies
+### Performance Notes
+- Complexity is O(n) for CSV scan  
+- PDF generation < 0.01s for small datasets  
+- Container size stays minimal due to few dependencies
 
 ---
 
