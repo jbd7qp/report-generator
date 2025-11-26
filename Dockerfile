@@ -15,4 +15,5 @@ ENV PYTHONPATH=/app
 
 EXPOSE 8080
 
+# Use Gunicorn to run Flask app inside src package
 CMD ["gunicorn", "--bind", "0.0.0.0:8080", "src.app:app", "--workers", "1"]

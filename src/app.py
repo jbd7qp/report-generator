@@ -1,12 +1,12 @@
 import logging
 import sys
 import os
+from datetime import datetime
 
 from flask import Flask, send_file, request, jsonify
 
-# Absolute imports from src package
 from src.utils import read_csv, summarize_data
-from src.main import generate_pdf  # reuse your existing function
+from src.main import generate_pdf
 
 # Configure logging for stdout (Azure App Service compatible)
 logging.basicConfig(
@@ -16,6 +16,10 @@ logging.basicConfig(
 )
 
 app = Flask(__name__)
+
+# Ensure reports directory exists
+REPORTS_DIR = "reports"
+os.makedirs(REPORTS_DIR, exist_ok=True)
 
 @app.route("/")
 def home():
@@ -40,9 +44,12 @@ def generate():
         summary = summarize_data(rows)
         logging.info("Summary generated.")
 
-        output_path = "report.pdf"
+        # Unique filename using timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_path = os.path.join(REPORTS_DIR, f"report_{timestamp}.pdf")
+
         generate_pdf(summary, output_path)
-        logging.info("PDF generated.")
+        logging.info(f"PDF generated: {output_path}")
 
         return send_file(output_path, as_attachment=True)
 

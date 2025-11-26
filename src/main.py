@@ -1,4 +1,3 @@
-# src/main.py
 import sys
 import logging
 from reportlab.lib.pagesizes import letter
@@ -13,7 +12,7 @@ logging.basicConfig(
 )
 
 def generate_pdf(summary, output_path="report.pdf"):
-    """Generate a simple PDF report from summary stats."""
+    """Generate a PDF from summary statistics."""
     c = canvas.Canvas(output_path, pagesize=letter)
     c.setFont("Helvetica", 12)
     y = 750
@@ -47,3 +46,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

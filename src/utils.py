@@ -1,31 +1,33 @@
 import csv
-from statistics import mean, median
 
 def read_csv(file_path):
-    """Read CSV and return list of rows as dicts."""
-    with open(file_path, newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        return list(reader)
+    """Read CSV file and return a list of dict rows."""
+    with open(file_path, newline="") as f:
+        reader = csv.DictReader(f)
+        return [row for row in reader]
 
 def summarize_data(rows):
-    """Return summary stats for numeric columns, ignoring empty or invalid values."""
+    """Summarize numeric columns: mean, median, count."""
     if not rows:
         return {}
-
+    
     summary = {}
-    numeric_cols = [k for k in rows[0].keys() if all(row[k].replace('.', '', 1).isdigit() or row[k] == '' for row in rows)]
-
-    for col in numeric_cols:
-        values = []
+    for col in rows[0].keys():
+        numeric_data = []
         for row in rows:
             try:
-                values.append(float(row[col]))
-            except ValueError:
-                pass  # skip empty or non-numeric
-        if values:
+                val = float(row[col])
+                numeric_data.append(val)
+            except (ValueError, TypeError):
+                continue  # skip non-numeric or missing
+        
+        if numeric_data:
+            numeric_data.sort()
+            n = len(numeric_data)
+            median = numeric_data[n // 2] if n % 2 == 1 else (numeric_data[n//2 - 1] + numeric_data[n//2]) / 2
             summary[col] = {
-                'mean': mean(values),
-                'median': median(values),
-                'count': len(values)
+                "mean": sum(numeric_data) / n,
+                "median": median,
+                "count": n
             }
     return summary
